@@ -6,11 +6,12 @@ const colorlibrary = ["#379b54", "#d9ff51", "#006caf", "#ffb7ef", "#ffa89b"
 , "#b21700", "#b3efc8", "#5f308e", "#085166"];
 const size_inflation = 5;
 
+var bigcolor = "";
+var smallcolor = "";
 var begin = false;
 var puddles = [];
-
-
-
+var timer = 0;
+debugger
 
 var canvas = document.createElement('canvas');
 
@@ -34,12 +35,15 @@ var animate = window.requestAnimationFrame ||
   function(callback) { window.setTimeout(callback, 1000/60) };
 
 
-  var step = () => {
+var step = () => {
 
-    update()
+    update();
 
-    render()
-  }
+    render();
+
+    animate(step);
+
+}
 
 
 
@@ -68,10 +72,10 @@ class Puddle {
 
 
  update(){
-   if (this.radius == edge_point){
+   if (this.radius == break_point){
      this.middle = true;
    }
-   this.radius += 2;
+   this.radius += 1;
 
  }
 }
@@ -83,7 +87,9 @@ class Puddle {
 window.addEventListener("keydown",
   function(event){
      if (event.keyCode == 71){
+
        begin = true
+
      }
 
   }
@@ -106,7 +112,7 @@ window.addEventListener("resize",
 
 
 var update = () => {
-
+  timer += 10;
   for (i = 0; i < puddles.length; i++) {
     puddles[i].update();
   }
@@ -120,12 +126,14 @@ var update = () => {
 
 
 var render = () => {
-  context.fillStyle = "#000000"
-  context.fillRect(0,0, width, height)
+
+
 
 
 
   if (begin == false){
+    context.fillStyle = "#000000"
+    context.fillRect(0,0, width, height)
     context.font = "25px Courier New";
     context.fillStyle = "orange";
     context.textAlign = "center"
@@ -134,15 +142,18 @@ var render = () => {
   }
 
 
-  if (begin){
-    var bigcolor = colorlibrary[(Math.random() * colorlibrary.length) + 1];
+  if (begin == true){
+    console.log("begin is now true!")
+    bigcolor = colorlibrary[Math.floor((Math.random() * colorlibrary.length)) + 1];
+    console.log(bigcolor);
     context.fillStyle = bigcolor
     context.fillRect(0,0, width, height)
-    delete colorlibrary[indexOf(bigcolor)];
-    var smallcolor = colorlibrary.[(Math.random() * colorlibrary.length) + 1];
-
-    for (i = 0; i < puddles.length; i++) {
-      puddles[i].render();
+    delete colorlibrary[colorlibrary.indexOf(bigcolor)];
+    smallcolor = colorlibrary[Math.floor((Math.random() * colorlibrary.length)) + 1];
+    if (timer%60==0){
+      for (i = 0; i < puddles.length; i++) {
+        puddles[i].render();
+      }
     }
 
 
