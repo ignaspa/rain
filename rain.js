@@ -87,11 +87,8 @@ class Puddle {
 window.addEventListener("keydown",
   function(event){
      if (event.keyCode == 71){
-
        begin = true
-
      }
-
   }
 );
 
@@ -99,15 +96,12 @@ window.addEventListener("keydown",
 
 
 window.addEventListener("resize",
-
   function(event){
-
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
     var width = canvas.width
     var height = canvas.height
-
-    }
+  }
 );
 
 
@@ -116,8 +110,9 @@ var update = () => {
   for (i = 0; i < puddles.length; i++) {
     puddles[i].update();
   }
-  if (begin) {
+  if (begin && timer % 60 == 0) {
     puddles.push(new Puddle(Math.random()*width + 1, Math.random()*height + 1))
+    timer = 0
   }
 
 
@@ -137,17 +132,16 @@ var render = () => {
     context.font = "25px Courier New";
     context.fillStyle = "orange";
     context.textAlign = "center"
-    context.fillText("Press [g] // Pousser [g]", 0.5 * canvas.width, 0.5 * canvas.height);
+    context.fillText("Press [g] /\\ Pousser [g]", 0.5 * canvas.width, 0.5 * canvas.height);
 
   }
 
 
   if (begin == true && first == true){
     bigcolor = colorlibrary[Math.floor((Math.random() * colorlibrary.length)) + 1];
-    console.log(bigcolor);
     context.fillStyle = bigcolor
-    context.fillRect(0,0, width, height)
-    delete colorlibrary[colorlibrary.indexOf(bigcolor)];
+    //context.fillRect(0,0, width, height)
+    colorlibrary.splice(colorlibrary.indexOf(bigcolor), 1);
     smallcolor = colorlibrary[Math.floor((Math.random() * colorlibrary.length)) + 1];
     first = false;
   }
@@ -155,8 +149,7 @@ var render = () => {
 
 
 
-  if (timer%60 ==0 ){
-    console.log("hello");
+  if (begin && first == false){
     for (i = 0; i < puddles.length; i++) {
       puddles[i].render();
     }
