@@ -5,7 +5,7 @@ const edge = 5;
 const colorlibrary = ["#379b54", "#d9ff51", "#006caf", "#ffb7ef", "#ffa89b"
 , "#b21700", "#b3efc8", "#5f308e", "#085166"];
 const size_inflation = 5;
-
+const end = [10,20,30,60,50];
 var bigcolor = "";
 var smallcolor = "";
 var begin = false;
@@ -74,8 +74,12 @@ class Puddle {
  update(){
    if (this.radius == break_point){
      this.middle = true;
+     console.log(this.middle)
    }
    this.radius += 1;
+   if (this.radius == end[Math.random()*end.length + 1] ){
+     puddles.splice(puddles.indexOf(this));
+   }
 
  }
 }
@@ -110,7 +114,7 @@ var update = () => {
   for (i = 0; i < puddles.length; i++) {
     puddles[i].update();
   }
-  if (begin && timer % 60 == 0) {
+  if (begin && (timer == 60)) {
     puddles.push(new Puddle(Math.random()*width + 1, Math.random()*height + 1))
     timer = 0
   }
@@ -139,17 +143,19 @@ var render = () => {
 
   if (begin == true && first == true){
     bigcolor = colorlibrary[Math.floor((Math.random() * colorlibrary.length)) + 1];
+    console.log(bigcolor);
     context.fillStyle = bigcolor
-    //context.fillRect(0,0, width, height)
+    context.fillRect(0,0, width, height)
     colorlibrary.splice(colorlibrary.indexOf(bigcolor), 1);
     smallcolor = colorlibrary[Math.floor((Math.random() * colorlibrary.length)) + 1];
+    console.log(smallcolor)
     first = false;
   }
 
 
 
 
-  if (begin && first == false){
+  if (begin && (first == false)){
     for (i = 0; i < puddles.length; i++) {
       puddles[i].render();
     }
