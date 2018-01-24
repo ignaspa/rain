@@ -11,7 +11,7 @@ var smallcolor = "";
 var begin = false;
 var puddles = [];
 var timer = 0;
-debugger
+var first = true;
 
 var canvas = document.createElement('canvas');
 
@@ -142,22 +142,24 @@ var render = () => {
   }
 
 
-  if (begin == true){
-    console.log("begin is now true!")
+  if (begin == true && first == true){
     bigcolor = colorlibrary[Math.floor((Math.random() * colorlibrary.length)) + 1];
     console.log(bigcolor);
     context.fillStyle = bigcolor
     context.fillRect(0,0, width, height)
     delete colorlibrary[colorlibrary.indexOf(bigcolor)];
     smallcolor = colorlibrary[Math.floor((Math.random() * colorlibrary.length)) + 1];
-    if (timer%60==0){
-      for (i = 0; i < puddles.length; i++) {
-        puddles[i].render();
-      }
+    first = false;
+  }
+
+
+
+
+  if (timer%60 ==0 ){
+    console.log("hello");
+    for (i = 0; i < puddles.length; i++) {
+      puddles[i].render();
     }
-
-
-
   }
 
 
