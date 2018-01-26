@@ -41,7 +41,7 @@ var animate = window.requestAnimationFrame ||
 var step = () => {
 
     update();
-    console.log(puddles)
+
     render();
 
     animate(step);
@@ -59,6 +59,8 @@ class Puddle {
     this.y = y;
     this.radius = initial_R;
     this.middle = false;
+    this.end = end[Math.floor(Math.random()*end.length)];
+    console.log(this.end)
   }
 
   render() {
@@ -81,8 +83,9 @@ class Puddle {
      console.log(this.middle)
    }
    this.radius += 1;
-   if (this.radius == end[Math.random()*end.length + 1] ){
-     puddles.splice(puddles.indexOf(this));
+   if (this.radius >= this.end ){
+     console.log("deth")
+     puddles.splice(puddles.indexOf(this), 1);
    }
 
  }
@@ -149,12 +152,12 @@ var render = () => {
 
 
   if (begin == true && first == true){
-    bigcolor = colorlibrary[Math.floor((Math.random() * colorlibrary.length)) + 1];
+    bigcolor = colorlibrary[Math.floor((Math.random() * colorlibrary.length))];
     console.log(bigcolor);
     context.fillStyle = bigcolor
     context.fillRect(0,0, width, height)
     colorlibrary.splice(colorlibrary.indexOf(bigcolor), 1);
-    smallcolor = colorlibrary[Math.floor((Math.random() * colorlibrary.length)) + 1];
+    smallcolor = colorlibrary[Math.floor((Math.random() * colorlibrary.length))];
     console.log(smallcolor)
     first = false;
   }
@@ -163,6 +166,8 @@ var render = () => {
 
 
   if (begin && (first == false)){
+    context.fillStyle = bigcolor
+    context.fillRect(0,0, width, height)
     for (i = 0; i < puddles.length; i++) {
       puddles[i].render();
     }
