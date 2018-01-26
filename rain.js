@@ -39,7 +39,7 @@ var timer = 0;
 //this is the timer, it will be used as a measure for when new colors should be
 // created and added to puddles[]
 
-var first = false
+var first = true
 //this is simply the indicator for when the user first wants the rain to start,
 //so the bigcolor and smallcolor get chosen and puddles begin
 
@@ -134,7 +134,9 @@ class Puddle {
    if (this.radius >= this.end ){
      puddles.splice(puddles.indexOf(this), 1);
      //this is where the puddle checks if it should end according to the
-     //randomly predetermined end radius
+     //randomly predetermined end radius, and once it takes it out of
+     //the library it is not referenced and eventually will not affect
+     //memory
    }
 
 
