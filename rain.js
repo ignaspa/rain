@@ -1,7 +1,7 @@
 
 const initial_R = 5;
 const break_point = 10;
-const edge = 5;
+const edge = 10;
 const colorlibrary = ["#379b54", "#d9ff51", "#006caf", "#ffb7ef", "#ffa89b"
 , "#b21700", "#b3efc8", "#5f308e", "#085166"];
 const size_inflation = 5;
@@ -15,14 +15,17 @@ var first = true;
 
 var canvas = document.createElement('canvas');
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-var width = canvas.width;
-var height = canvas.height;
-var context = canvas.getContext('2d');
+var width
+var height
+var context
 
 
 window.onload = () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  width = canvas.width;
+  height = canvas.height;
+  context = canvas.getContext('2d');
   document.body.appendChild(canvas)
   animate(step)
 }
@@ -38,7 +41,7 @@ var animate = window.requestAnimationFrame ||
 var step = () => {
 
     update();
-
+    console.log(puddles)
     render();
 
     animate(step);
@@ -60,11 +63,12 @@ class Puddle {
 
   render() {
     context.beginPath();
-    context.fillstyle = smallcolor;
+    context.fillStyle = smallcolor;
     context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI)
     context.fill()
     if (this.middle){
-      context.fillstyle = bigcolor;
+      context.beginPath();
+      context.fillStyle = bigcolor;
       context.arc(this.x, this.y, this.radius - edge , 0, 2 * Math.PI)
       context.fill()
     }
@@ -110,11 +114,14 @@ window.addEventListener("resize",
 
 
 var update = () => {
-  timer += 10;
+  if (begin){
+    timer += 10;
+  }
+
   for (i = 0; i < puddles.length; i++) {
     puddles[i].update();
   }
-  if (begin && (timer == 60)) {
+  if (begin && (timer >= 60)) {
     puddles.push(new Puddle(Math.random()*width + 1, Math.random()*height + 1))
     timer = 0
   }
